@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GitHub Copilot Dev Days | Mumbai 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --border: rgba(255,255,255,0.08);
+    --border-bright: rgba(255,255,255,0.15);
+    --text: #e8e8f0;
+    --text-muted: #7a7a8c;
+    --text-dim: #4a4a5a;
+    --accent: #4f8ef7;
+    --accent2: #7c3aed;
+    --accent-glow: rgba(79,142,247,0.15);
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --tag-bg: rgba(79,142,247,0.1);
+    --tag-text: #93c5fd;
+    --mono: 'DM Mono', monospace;
+    --display: 'Syne', sans-serif;
+    --serif: 'Fraunces', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--display);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* === NOISE TEXTURE === */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* === GRID LINES === */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* === NAV === */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 60px;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* === HERO === */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 80px 80px;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -200px; left: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(79,142,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    animation: glowPulse 6s ease-in-out infinite;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    bottom: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    animation: glowPulse 8s ease-in-out infinite reverse;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+
+  .hero-title-sub {
+    font-family: var(--serif);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-muted);
+    line-height: 1.1;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .hero-accent { color: var(--accent); }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 56px;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+
+  .meta-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .meta-chip .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: blink 2s ease infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-stat-row {
+    display: flex;
+    gap: 48px;
+    animation: fadeUp 0.6s ease 0.4s both;
+  }
+
+  .hero-stat { border-left: 2px solid var(--border-bright); padding-left: 20px; }
+  .hero-stat-num {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: -0.04em;
+  }
+  .hero-stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px; left: 80px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    animation: fadeUp 0.6s ease 0.7s both;
+  }
+
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: var(--text-dim);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: var(--accent);
+    animation: scanLine 2s ease infinite;
+  }
+
+  @keyframes scanLine {
+    to { left: 100%; }
+  }
+
+  /* === SECTION WRAPPER === */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 80px;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: attr(data-num);
+    color: var(--accent);
+    font-size: 10px;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 48px;
+  }
+
+  /* === ABOUT GRID === */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .about-cell {
+    background: var(--surface);
+    padding: 40px;
+    transition: background 0.3s;
+  }
+
+  .about-cell:hover { background: var(--surface2); }
+
+  .about-cell-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .about-cell-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .about-cell.full { grid-column: 1 / -1; }
+
+  .about-cell p {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 700px;
+  }
+
+  /* === AGENDA === */
+  .agenda-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .agenda-item {
+    display: grid;
+    grid-template-columns: 180px 1fr auto;
+    align-items: center;
+    padding: 28px 36px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    transition: background 0.25s, transform 0.25s;
+    gap: 32px;
+    cursor: default;
+  }
+
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-item:hover { background: var(--surface2); transform: translateX(4px); }
+
+  .agenda-idx {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .agenda-topic {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .agenda-sub {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .agenda-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border-radius: 2px;
+    white-space: nowrap;
+    border: 1px solid rgba(79,142,247,0.2);
+  }
+
+  .agenda-tag.green { background: rgba(34,197,94,0.08); color: #4ade80; border-color: rgba(34,197,94,0.2); }
+  .agenda-tag.amber { background: rgba(245,158,11,0.08); color: #fbbf24; border-color: rgba(245,158,11,0.2); }
+
+  /* === HIGHLIGHTS BENTO === */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bento-card {
+    background: var(--surface);
+    padding: 36px;
+    transition: background 0.3s;
+  }
+
+  .bento-card:hover { background: var(--surface2); }
+  .bento-card.wide { grid-column: span 2; }
+  .bento-card.tall { grid-row: span 2; }
+
+  .bento-icon {
+    width: 40px; height: 40px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+
+  .bento-num {
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .bento-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .bento-text {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-top: 12px;
+  }
+
+  .bento-card.accent-card { background: linear-gradient(135deg, #0f1a3a, #111118); border-left: 2px solid var(--accent); }
+
+  /* === CERT SECTION === */
+  .cert-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .cert-header {
+    background: linear-gradient(90deg, var(--surface2), var(--surface));
+    padding: 32px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cert-header h3 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .cert-body {
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .cert-url-box {
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 20px 24px;
+    background: var(--bg);
+    border: 1px solid var(--border-bright);
+    border-radius: 2px;
+    color: var(--accent);
+    word-break: break-all;
+    position: relative;
+  }
+
+  .cert-url-box::before {
+    content: '$ open';
+    display: block;
+    color: var(--text-dim);
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+
+  .cert-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .cert-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cert-step:last-child { border-bottom: none; }
+
+  .cert-step-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    background: var(--tag-bg);
+    border: 1px solid rgba(79,142,247,0.2);
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border-radius: 2px;
+    margin-top: 2px;
+  }
+
+  .cert-step-text {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* === ORGANIZERS === */
+  .org-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .org-card {
+    background: var(--surface);
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: background 0.3s;
+  }
+
+  .org-card:hover { background: var(--surface2); }
+
+  .org-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+
+  .org-badge.ms { background: rgba(0,120,212,0.1); color: #60a5fa; border: 1px solid rgba(0,120,212,0.25); }
+  .org-badge.az { background: rgba(0,164,239,0.1); color: #38bdf8; border: 1px solid rgba(0,164,239,0.25); }
+
+  .org-name {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .org-desc {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .org-role {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* === LINKS SECTION === */
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .link-card {
+    background: var(--surface);
+    padding: 32px 28px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: background 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+    color: inherit;
+  }
+
+  .link-card::after {
+    content: '↗';
+    position: absolute;
+    top: 28px; right: 28px;
+    font-size: 18px;
+    color: var(--text-dim);
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .link-card:hover { background: var(--surface2); transform: translateY(-2px); }
+  .link-card:hover::after { color: var(--accent); transform: translate(3px, -3px); }
+
+  .link-card-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .link-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    padding-right: 24px;
+  }
+
+  /* === FOOTER === */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 60px 80px 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 24px;
+  }
+
+  .footer-left {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  .footer-left strong { color: var(--text-muted); }
+
+  .footer-right {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-link {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+
+  .footer-link:hover { color: var(--accent); }
+
+  /* === ANIMATIONS === */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* === DIVIDER === */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
+    margin: 0;
+  }
+
+  /* === POWERED BY BAR === */
+  .powered-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 18px 40px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    z-index: 1;
+    position: relative;
+  }
+
+  .powered-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+  }
+
+  .powered-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border-bright);
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    section { padding: 60px 24px; }
+    .about-grid, .bento, .org-grid, .links-grid { grid-template-columns: 1fr; }
+    .bento-card.wide, .bento-card.tall { grid-column: span 1; grid-row: span 1; }
+    .agenda-item { grid-template-columns: 1fr; gap: 8px; }
+    .cert-body { grid-template-columns: 1fr; }
+    .hero-stat-row { gap: 24px; flex-wrap: wrap; }
+    footer { flex-direction: column; padding: 40px 24px; }
+    .links-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">~/copilot-dev-days/<span>mumbai</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#agenda">Sessions</a></li>
+    <li><a href="#highlights">Highlights</a></li>
+    <li><a href="#certificates">Certificates</a></li>
+    <li><a href="#organizers">Organizers</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-eyebrow">GitHub Copilot Dev Days · Global Series</div>
+
+  <h1 class="hero-title"><span class="hero-accent">Mumbai</span><br>2026</h1>
+  <p class="hero-title-sub">A day for developers,<br>by developers.</p>
+
+  <div class="hero-meta">
+    <div class="meta-chip"><span class="dot"></span> 28 March 2026</div>
+    <div class="meta-chip">📍 Microsoft Office, Mumbai</div>
+    <div class="meta-chip">🏛️ In-person · Hands-on</div>
+    <div class="meta-chip">🤖 AI-assisted Development</div>
+  </div>
+
+  <div class="hero-stat-row">
+    <div class="hero-stat">
+      <div class="hero-stat-num">83</div>
+      <div class="hero-stat-label">Developers</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">6</div>
+      <div class="hero-stat-label">Sessions</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">1</div>
+      <div class="hero-stat-label">Full Day</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">∞</div>
+      <div class="hero-stat-label">Ideas Built</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    scroll to explore
+  </div>
+</div>
+
+<!-- POWERED BY BAR -->
+<div class="powered-bar">
+  <span class="powered-label">Powered by</span>
+  <span class="powered-tag">Microsoft</span>
+  <span class="powered-tag">GitHub</span>
+  <span class="powered-label">·  Organised by</span>
+  <span class="powered-tag">Microsoft Student Ambassadors</span>
+  <span class="powered-tag">Dear Azure — Azure India</span>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label" data-num="01">About the Event</div>
+  <h2 class="section-title reveal">What was<br>Dev Days Mumbai?</h2>
+
+  <div class="about-grid reveal">
+    <div class="about-cell full">
+      <p>
+        GitHub Copilot Dev Days | Mumbai was a hands-on, in-person, community-led event focused on
+        helping developers explore real-world AI-assisted coding using GitHub Copilot. As part of
+        the global GitHub Copilot Dev Days series, the event brought together 83 developers from
+        across Mumbai to learn, build, and connect — all in a single day.
+      </p>
+    </div>
+    <div class="about-cell">
+      <div class="about-cell-label">Date</div>
+      <div class="about-cell-value">28th March 2026</div>
+    </div>
+    <div class="about-cell">
+      <div class="about-cell-label">Venue</div>
+      <div class="about-cell-value">Microsoft Office, Mumbai, India</div>
+    </div>
+    <div class="about-cell">
+      <div class="about-cell-label">Format</div>
+      <div class="about-cell-value">In-person · Hands-on Workshop</div>
+    </div>
+    <div class="about-cell">
+      <div class="about-cell-label">Series</div>
+      <div class="about-cell-value">GitHub Copilot Dev Days (Global)</div>
+    </div>
+    <div class="about-cell">
+      <div class="about-cell-label">Total Participants</div>
+      <div class="about-cell-value">83 Developers</div>
+    </div>
+    <div class="about-cell">
+      <div class="about-cell-label">Focus Area</div>
+      <div class="about-cell-value">AI-assisted Development</div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENDA -->
+<section id="agenda">
+  <div class="section-label" data-num="02">Sessions</div>
+  <h2 class="section-title reveal">What we covered</h2>
+
+  <div class="agenda-list reveal">
+    <div class="agenda-item">
+      <div class="agenda-idx">Session 01</div>
+      <div>
+        <div class="agenda-topic">Supercharge Your Coding with GitHub Copilot</div>
+        <div class="agenda-sub">Fundamentals · Code completions · Inline suggestions · Copilot Chat</div>
+      </div>
+      <div class="agenda-tag">Keynote</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-idx">Session 02</div>
+      <div>
+        <div class="agenda-topic">GitHub Copilot: Your AI Companion for Every Workflow</div>
+        <div class="agenda-sub">Agent Mode · Context Engineering · Custom Instructions · MCP</div>
+      </div>
+      <div class="agenda-tag">Deep Dive</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-idx">Session 03</div>
+      <div>
+        <div class="agenda-topic">GitHub Copilot CLI</div>
+        <div class="agenda-sub">Terminal-based workflows · Command-line productivity</div>
+      </div>
+      <div class="agenda-tag amber">Demo</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-idx">Session 04</div>
+      <div>
+        <div class="agenda-topic">Real-world Developer Workflows</div>
+        <div class="agenda-sub">Debugging · Documentation · Refactoring with Copilot</div>
+      </div>
+      <div class="agenda-tag">Workshop</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-idx">Session 05</div>
+      <div>
+        <div class="agenda-topic">Hands-on Guided Workshop</div>
+        <div class="agenda-sub">Live coding exercises · Practical implementation</div>
+      </div>
+      <div class="agenda-tag green">Hands-on</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-idx">Session 06</div>
+      <div>
+        <div class="agenda-topic">GitHub Certification</div>
+        <div class="agenda-sub">Certification paths · Resources to validate expertise</div>
+      </div>
+      <div class="agenda-tag amber">Certification</div>
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS BENTO -->
+<section id="highlights">
+  <div class="section-label" data-num="03">Highlights</div>
+  <h2 class="section-title reveal">By the numbers</h2>
+
+  <div class="bento reveal">
+    <div class="bento-card accent-card">
+      <div class="bento-num" style="color:var(--accent)">83</div>
+      <div class="bento-label">Developers attended</div>
+      <div class="bento-text">From across Mumbai, all under one roof — learning, building, and connecting with AI-first tools.</div>
+    </div>
+    <div class="bento-card">
+      <div class="bento-num" style="color:var(--green)">6</div>
+      <div class="bento-label">Technical sessions</div>
+      <div class="bento-text">Curated for depth and practicality, from CLI tricks to advanced Agent Mode.</div>
+    </div>
+    <div class="bento-card">
+      <div class="bento-num" style="color:#a78bfa">1</div>
+      <div class="bento-label">Global event series</div>
+      <div class="bento-text">Part of the worldwide GitHub Copilot Dev Days movement, bringing AI coding education to every city.</div>
+    </div>
+    <div class="bento-card wide">
+      <div class="bento-label" style="margin-bottom:16px">What participants walked away with</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <span style="font-family:var(--mono);font-size:11px;padding:6px 14px;background:var(--tag-bg);border:1px solid rgba(79,142,247,0.2);border-radius:2px;color:var(--tag-text)">Copilot proficiency</span>
+        <span style="font-family:var(--mono);font-size:11px;padding:6px 14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:2px;color:#4ade80">CLI skills</span>
+        <span style="font-family:var(--mono);font-size:11px;padding:6px 14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:2px;color:#fbbf24">Certification roadmap</span>
+        <span style="font-family:var(--mono);font-size:11px;padding:6px 14px;background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);border-radius:2px;color:#c4b5fd">Agent Mode know-how</span>
+        <span style="font-family:var(--mono);font-size:11px;padding:6px 14px;background:var(--tag-bg);border:1px solid rgba(79,142,247,0.2);border-radius:2px;color:var(--tag-text)">Digital certificate</span>
+        <span style="font-family:var(--mono);font-size:11px;padding:6px 14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:2px;color:#4ade80">Community network</span>
+      </div>
+    </div>
+    <div class="bento-card">
+      <div class="bento-num" style="color:var(--amber)">100%</div>
+      <div class="bento-label">Hands-on learning</div>
+      <div class="bento-text">Every session was designed for immediate application, not just theory.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section id="certificates">
+  <div class="section-label" data-num="04">Certificates</div>
+  <h2 class="section-title reveal">Verify your certificate</h2>
+
+  <div class="cert-box reveal">
+    <div class="cert-header">
+      <h3>🎓 Certificate Verification System</h3>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--green);display:flex;align-items:center;gap:6px">
+        <span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;animation:blink 2s infinite"></span>
+        Live on GitHub Pages
+      </span>
+    </div>
+    <div class="cert-body">
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:16px">Verification URL</div>
+        <div class="cert-url-box">
+          https://SohelPathan0.github.io/<br>certificate-verification/?id=GCDM-001
+        </div>
+        <div style="margin-top:20px;font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px">Replace the ID with your certificate number</div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted);padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:2px">
+          Format: <span style="color:var(--accent)">GCDM-001</span> through <span style="color:var(--accent)">GCDM-083</span>
+        </div>
+      </div>
+      <div class="cert-flow">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:16px">How it works</div>
+        <div class="cert-step">
+          <div class="cert-step-num">1</div>
+          <div class="cert-step-text">Locate the unique ID printed on your certificate (format: GCDM-XXX)</div>
+        </div>
+        <div class="cert-step">
+          <div class="cert-step-num">2</div>
+          <div class="cert-step-text">Visit the verification URL and append <code style="color:var(--accent)">?id=GCDM-XXX</code></div>
+        </div>
+        <div class="cert-step">
+          <div class="cert-step-num">3</div>
+          <div class="cert-step-text">Page fetches data.json and looks up your certificate record</div>
+        </div>
+        <div class="cert-step">
+          <div class="cert-step-num">4</div>
+          <div class="cert-step-text">Your name, event, role, and verification status are displayed ✅</div>
+        </div>
+        <div style="margin-top:24px">
+          <a href="https://SohelPathan0.github.io/certificate-verification/" target="_blank"
+             style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:12px;letter-spacing:0.08em;text-decoration:none;border-radius:2px;transition:opacity 0.2s;"
+             onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+            Verify a Certificate ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORGANIZERS -->
+<section id="organizers">
+  <div class="section-label" data-num="05">Organizers</div>
+  <h2 class="section-title reveal">The teams behind the event</h2>
+
+  <div class="org-grid reveal">
+    <div class="org-card">
+      <div class="org-badge ms">🏛️ Microsoft Program</div>
+      <div class="org-name">Microsoft Student Ambassadors</div>
+      <div class="org-desc">
+        A global program empowering students to lead developer communities, organize events, and
+        bridge the gap between academic learning and industry-ready skills. The Mumbai chapter organized
+        and hosted this event end-to-end.
+      </div>
+      <div class="org-role">Primary Organizer</div>
+    </div>
+    <div class="org-card">
+      <div class="org-badge az">☁️ Azure Community</div>
+      <div class="org-name">Dear Azure — Azure India</div>
+      <div class="org-desc">
+        One of India's most active Azure community groups, dedicated to spreading cloud knowledge,
+        connecting practitioners, and supporting developer education across the country. Partnered
+        for community reach and event support.
+      </div>
+      <div class="org-role">In Association With</div>
+    </div>
+  </div>
+</section>
+
+<!-- LINKS -->
+<section id="links">
+  <div class="section-label" data-num="06">Resources</div>
+  <h2 class="section-title reveal">Explore further</h2>
+
+  <div class="links-grid reveal">
+    <a href="https://SohelPathan0.github.io/certificate-verification/" target="_blank" class="link-card">
+      <div class="link-card-tag">Certificate</div>
+      <div class="link-card-title">Verify Your Certificate</div>
+    </a>
+    <a href="https://github.com/features/copilot" target="_blank" class="link-card">
+      <div class="link-card-tag">Product</div>
+      <div class="link-card-title">GitHub Copilot</div>
+    </a>
+    <a href="https://copilot-dev-days.github.io/" target="_blank" class="link-card">
+      <div class="link-card-tag">Global</div>
+      <div class="link-card-title">Copilot Dev Days Workshops</div>
+    </a>
+    <a href="https://github.blog/ai-and-ml/github-copilot/join-or-host-a-github-copilot-dev-days-event-near-you/" target="_blank" class="link-card">
+      <div class="link-card-tag">Blog</div>
+      <div class="link-card-title">Global Event Series Info</div>
+    </a>
+    <a href="https://docs.github.com/en/copilot" target="_blank" class="link-card">
+      <div class="link-card-tag">Docs</div>
+      <div class="link-card-title">GitHub Copilot Documentation</div>
+    </a>
+    <a href="https://github.com/SohelPathan0/GItHub-Copilot-Dev-Days-Mumbai" target="_blank" class="link-card">
+      <div class="link-card-tag">Repository</div>
+      <div class="link-card-title">Event GitHub Repo</div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <strong>GitHub Copilot Dev Days | Mumbai 2026</strong><br>
+    Organised by Microsoft Student Ambassadors &amp; Dear Azure — Azure India<br>
+    Powered by Microsoft &amp; GitHub
+  </div>
+  <div class="footer-right">
+    <a href="https://github.com/SohelPathan0" class="footer-link">GitHub</a>
+    <a href="https://SohelPathan0.github.io/certificate-verification/" class="footer-link">Certificates</a>
+    <a href="https://github.com/features/copilot" class="footer-link">Copilot</a>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// Animate hero stats counting up
+function countUp(el, target, suffix='') {
+  let start = 0;
+  const duration = 1200;
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    if (target === Infinity) { el.textContent = '∞'; return; }
+    el.textContent = Math.floor(eased * target) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const statNums = document.querySelectorAll('.hero-stat-num');
+const vals = [83, 6, 1, Infinity];
+let counted = false;
+const statObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && !counted) {
+    counted = true;
+    statNums.forEach((el, i) => {
+      if (vals[i] === Infinity) { el.textContent = '∞'; }
+      else setTimeout(() => countUp(el, vals[i]), i * 150);
+    });
+  }
+});
+statObserver.observe(statNums[0]);
+</script>
+</body>
+</html>
