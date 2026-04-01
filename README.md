@@ -11,11 +11,9 @@
 
 <br/>
 
-[![Live Site](https://img.shields.io/badge/🌐%20Live%20Site-Visit%20Now-0078D4?style=for-the-badge)]
-[![Event Date](https://img.shields.io/badge/📅%20Event%20Date-28%20March%202026-0d1117?style=for-the-badge)]
-[![Participants](https://img.shields.io/badge/👥%20Participants-83%20Developers-4ade80?style=for-the-badge)]
-[![Location](https://img.shields.io/badge/📍%20Location-Mumbai%2C%20India-f59e0b?style=for-the-badge)]
-
+[![Live Site](https://img.shields.io/badge/🌐%20Live%20Site-Visit%20Now-0078D4?style=for-the-badge)](https://sohelpathan0.github.io/GItHub-Copilot-Dev-Days-Mumbai-Blog/)
+![Event Date](https://img.shields.io/badge/📅%20Event%20Date-28%20March%202026-0d1117?style=for-the-badge)
+![Location](https://img.shields.io/badge/📍%20Location-Mumbai%2C%20India-f59e0b?style=for-the-badge)
 <br/>
 <div align="center">
   
@@ -80,6 +78,8 @@ https://sohelpathan0.github.io/certificate-verification/?id=GCDM-001
 
 ---
 
+<div align="center">
+
 ## ⚙️ How It Works
 
 ```
@@ -101,6 +101,8 @@ https://sohelpathan0.github.io/certificate-verification/?id=GCDM-001
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
+
+</div>
 
 ### 📄 Certificate Record Format (`data.json`)
 
